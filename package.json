@@ -1,0 +1,42 @@
+{
+    "name": "@deeploi/phrase",
+    "version": "1.0.0",
+    "main": "./dist/index.js",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "private": true,
+    "scripts": {
+        "postinstall": "yarn build",
+        "test": "vitest run",
+        "build": "tsup src/index.ts --format cjs,esm --dts",
+        "format:fix": "eslint ./src/. --fix --ext .ts --ignore-pattern src/**/*.d.ts",
+        "format:check": "eslint ./src/. --ext .ts --ignore-pattern src/**/*.d.ts",
+        "build:watch": "tsup src/index.ts --watch --format cjs,esm --dts"
+    },
+    "devDependencies": {
+        "@types/dot-object": "^2.1.6",
+        "@types/node": "^22.13.5",
+        "@typescript-eslint/eslint-plugin": "^5.57.0",
+        "@typescript-eslint/parser": "^6.19.0",
+        "eslint": "^8.37.0",
+        "eslint-config-prettier": "^8.3.0",
+        "eslint-plugin-import": "^2.29.1",
+        "eslint-plugin-prettier": "^5.2.1",
+        "prettier": "3.2.5",
+        "tsup": "8.0.1",
+        "typescript": "^5.6.3",
+        "vitest": "^2.1.8"
+    },
+    "author": "",
+    "license": "ISC",
+    "description": "",
+    "dependencies": {
+        "@inquirer/prompts": "^7.3.2",
+        "chalk": "^5.4.1",
+        "date-fns": "^4.1.0",
+        "deep-object-diff": "^1.1.9",
+        "dot-object": "^2.1.5",
+        "form-data": "^4.0.2",
+        "phrase-js": "^3.2.0"
+    }
+}
