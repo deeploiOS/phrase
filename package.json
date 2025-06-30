@@ -23,7 +23,6 @@
         "eslint-plugin-import": "^2.29.1",
         "eslint-plugin-prettier": "^5.2.1",
         "prettier": "3.2.5",
-        "tsup": "8.0.1",
         "typescript": "^5.6.3",
         "vitest": "^2.1.8"
     },
@@ -37,6 +36,7 @@
         "deep-object-diff": "^1.1.9",
         "dot-object": "^2.1.5",
         "form-data": "^4.0.2",
-        "phrase-js": "^3.2.0"
+        "phrase-js": "^3.2.0",
+        "tsup": "8.0.1"
     }
 }
