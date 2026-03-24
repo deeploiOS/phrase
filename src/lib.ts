@@ -105,9 +105,11 @@ const downloadLocale = async (locale: string, skipUnverifiedTranslations = true)
 const createLocaleFiles = async ({
     locale,
     localesDirPath,
+    preserveLocalKeys = true,
 }: {
     localesDirPath: string
     locale: string
+    preserveLocalKeys?: boolean
 }) => {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const localeJsonObject = require(path.join(tempDirPath, `${locale}.json`))
@@ -116,9 +118,20 @@ const createLocaleFiles = async ({
 
     await Promise.all(
         namespaces.map((namespace) => {
+            let content = localeJsonObject[namespace]
+
+            if (preserveLocalKeys) {
+                const localFilePath = path.join(localesDirPath, locale, `${namespace}.json`)
+                if (fs.existsSync(localFilePath)) {
+                    // eslint-disable-next-line @typescript-eslint/no-var-requires
+                    const localContent = require(localFilePath)
+                    content = { ...content, ...localContent }
+                }
+            }
+
             return fs.writeFileSync(
                 path.join(localesDirPath, locale, `${namespace}.json`),
-                JSON.stringify(localeJsonObject[namespace], null, 4) + '\n'
+                JSON.stringify(content, null, 4) + '\n'
             )
         })
     )

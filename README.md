@@ -19,6 +19,7 @@ const localesDirPath = path.join(path.resolve(), 'public', 'locales')
 pull({
     localesDirPath,
     phraseProjectId: 'phrase project id',
+    preserveLocalKeys: true, // optional, defaults to true. Set to false to fully overwrite local en keys with Phrase data.
 })
 ```
 
