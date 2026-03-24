@@ -6,6 +6,7 @@ NodeJS scripts to push and pull translations from phrase
 ```bash
 yarn test   # run all tests
 yarn build  # compile TypeScript
+yarn audit  # check for vulnerabilities
 ```
 
 ### Installation

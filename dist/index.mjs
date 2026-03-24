@@ -1,18 +1,17 @@
 var __require = /* @__PURE__ */ ((x) => typeof require !== "undefined" ? require : typeof Proxy !== "undefined" ? new Proxy(x, {
   get: (a, b) => (typeof require !== "undefined" ? require : a)[b]
 }) : x)(function(x) {
-  if (typeof require !== "undefined")
-    return require.apply(this, arguments);
+  if (typeof require !== "undefined") return require.apply(this, arguments);
   throw Error('Dynamic require of "' + x + '" is not supported');
 });
 
 // src/fileUtils.ts
-import fs from "node:fs";
+import fs from "fs";
 
 // src/config.ts
-import path from "node:path";
-import os from "node:os";
-import process2 from "node:process";
+import path from "path";
+import os from "os";
+import process2 from "process";
 var supportedLocales = ["en", "de"];
 var tempDirPath = path.join(os.tmpdir(), "web-app-phrase");
 var phraseApiToken = process2.env.PHRASE_API_TOKEN;
@@ -29,8 +28,8 @@ var clearTmpDir = () => {
 };
 
 // src/lib.ts
-import fs2 from "node:fs";
-import path2 from "node:path";
+import fs2 from "fs";
+import path2 from "path";
 import { differenceInMilliseconds } from "date-fns/differenceInMilliseconds";
 import {
   Configuration,
@@ -41,7 +40,7 @@ import {
   JobLocalesApi
 } from "phrase-js";
 import FormData from "form-data";
-import process3 from "node:process";
+import process3 from "process";
 import { addedDiff, updatedDiff, deletedDiff } from "deep-object-diff";
 import { dot } from "dot-object";
 import { confirm, input, select } from "@inquirer/prompts";
