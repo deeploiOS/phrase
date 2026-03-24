@@ -1,6 +1,13 @@
 # phrase
 NodeJS scripts to push and pull translations from phrase
 
+### Development
+
+```bash
+yarn test   # run all tests
+yarn build  # compile TypeScript
+```
+
 ### Installation
 
 ```bash

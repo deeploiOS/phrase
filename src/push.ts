@@ -95,7 +95,9 @@ const push = async ({
         }
     } else if (Object.keys(translationsDiff.deleted).length > 0) {
         for (const [name] of Object.entries(translationsDiff.deleted)) {
-            console.log(`Skipping deletion of "${name}" — pass allowDelete: true to remove it from Phrase`)
+            console.log(
+                `Skipping deletion of "${name}" — pass allowDelete: true to remove it from Phrase`
+            )
         }
     }
 

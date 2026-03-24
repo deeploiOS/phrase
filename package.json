@@ -8,8 +8,8 @@
     "scripts": {
         "test": "vitest run",
         "build": "tsup src/index.ts --format cjs,esm --dts",
-        "format:fix": "eslint ./src/. --fix --ext .ts --ignore-pattern src/**/*.d.ts",
-        "format:check": "eslint ./src/. --ext .ts --ignore-pattern src/**/*.d.ts",
+        "format:fix": "eslint ./src/. --fix --ext .ts --ignore-pattern 'src/**/*.d.ts'",
+        "format:check": "eslint ./src/. --ext .ts --ignore-pattern 'src/**/*.d.ts'",
         "build:watch": "tsup src/index.ts --watch --format cjs,esm --dts"
     },
     "devDependencies": {
