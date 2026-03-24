@@ -112,8 +112,9 @@ const createLocaleFiles = async ({
     locale: string
     preserveLocalKeys?: boolean
 }) => {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const localeJsonObject = require(path.join(tempDirPath, `${locale}.json`))
+    const localeJsonObject = JSON.parse(
+        fs.readFileSync(path.join(tempDirPath, `${locale}.json`), 'utf-8')
+    )
 
     const namespaces = Object.keys(localeJsonObject)
 
@@ -124,9 +125,8 @@ const createLocaleFiles = async ({
             if (preserveLocalKeys) {
                 const localFilePath = path.join(localesDirPath, locale, `${namespace}.json`)
                 if (fs.existsSync(localFilePath)) {
-                    // eslint-disable-next-line @typescript-eslint/no-require-imports
-                    const localContent = require(localFilePath)
-                    content = { ...content, ...localContent }
+                    const localContent = JSON.parse(fs.readFileSync(localFilePath, 'utf-8'))
+                    content = { ...localContent, ...content }
                 }
             }
 

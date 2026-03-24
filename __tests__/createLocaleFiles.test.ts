@@ -83,6 +83,28 @@ describe('createLocaleFiles', () => {
             expect(result).toEqual({ hello: 'Hello', world: 'World', newKey: 'New Local Key' })
         })
 
+        it('phrase value wins for keys present in both', async () => {
+            fs.writeFileSync(
+                path.join(testTempDir, 'en.json'),
+                JSON.stringify({ common: { hello: 'Hello from Phrase' } })
+            )
+            fs.writeFileSync(
+                path.join(testLocalesDir, 'en', 'common.json'),
+                JSON.stringify({ hello: 'Hello local edit', newKey: 'New Local Key' })
+            )
+
+            await createLocaleFiles({
+                locale: 'en',
+                localesDirPath: testLocalesDir,
+                preserveLocalKeys: true,
+            })
+
+            const result = JSON.parse(
+                fs.readFileSync(path.join(testLocalesDir, 'en', 'common.json'), 'utf-8')
+            )
+            expect(result).toEqual({ hello: 'Hello from Phrase', newKey: 'New Local Key' })
+        })
+
         it('overwrites local files entirely when false', async () => {
             fs.writeFileSync(
                 path.join(testTempDir, 'en.json'),
