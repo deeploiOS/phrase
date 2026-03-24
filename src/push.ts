@@ -22,10 +22,12 @@ const push = async ({
     phraseProjectName,
     phraseProjectId,
     localesDirPath,
+    allowDelete = false,
 }: {
     phraseProjectName: string
     phraseProjectId: string
     localesDirPath: string
+    allowDelete?: boolean
 }) => {
     setPhraseProjectId(phraseProjectId)
 
@@ -44,7 +46,7 @@ const push = async ({
     if (
         Object.keys(translationsDiff.added).length +
             Object.keys(translationsDiff.updated).length +
-            Object.keys(translationsDiff.deleted).length ===
+            (allowDelete ? Object.keys(translationsDiff.deleted).length : 0) ===
         0
     ) {
         console.log('Nothing to push')
@@ -83,12 +85,18 @@ const push = async ({
         }
     }
 
-    for (const [name] of Object.entries(translationsDiff.deleted)) {
-        console.log(`Deleting translation key ${name}`)
+    if (allowDelete) {
+        for (const [name] of Object.entries(translationsDiff.deleted)) {
+            console.log(`Deleting translation key ${name}`)
 
-        await deleteTranslationKey(name)
+            await deleteTranslationKey(name)
 
-        console.log(`Translation key ${name} was deleted`)
+            console.log(`Translation key ${name} was deleted`)
+        }
+    } else if (Object.keys(translationsDiff.deleted).length > 0) {
+        for (const [name] of Object.entries(translationsDiff.deleted)) {
+            console.log(`Skipping deletion of "${name}" — pass allowDelete: true to remove it from Phrase`)
+        }
     }
 
     if (userInput.phraseJob === UserAction.CREATE_NEW) {

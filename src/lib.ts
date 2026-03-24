@@ -118,7 +118,7 @@ const createLocaleFiles = async ({
         namespaces.map((namespace) => {
             return fs.writeFileSync(
                 path.join(localesDirPath, locale, `${namespace}.json`),
-                JSON.stringify(localeJsonObject[namespace], null, 4)
+                JSON.stringify(localeJsonObject[namespace], null, 4) + '\n'
             )
         })
     )

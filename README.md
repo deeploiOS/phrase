@@ -35,6 +35,7 @@ push({
     phraseProjectName: 'web-app',
     phraseProjectId: 'phrase project id',
     localesDirPath,
+    allowDelete: false, // optional, defaults to false. Pass true to also delete keys removed locally.
 }).catch((e) => {
     console.log('Phrase push failed')
     console.error(e)
