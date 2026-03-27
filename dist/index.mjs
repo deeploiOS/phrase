@@ -1,18 +1,17 @@
 var __require = /* @__PURE__ */ ((x) => typeof require !== "undefined" ? require : typeof Proxy !== "undefined" ? new Proxy(x, {
   get: (a, b) => (typeof require !== "undefined" ? require : a)[b]
 }) : x)(function(x) {
-  if (typeof require !== "undefined")
-    return require.apply(this, arguments);
+  if (typeof require !== "undefined") return require.apply(this, arguments);
   throw Error('Dynamic require of "' + x + '" is not supported');
 });
 
 // src/fileUtils.ts
-import fs from "node:fs";
+import fs from "fs";
 
 // src/config.ts
-import path from "node:path";
-import os from "node:os";
-import process2 from "node:process";
+import path from "path";
+import os from "os";
+import process2 from "process";
 var supportedLocales = ["en", "de"];
 var tempDirPath = path.join(os.tmpdir(), "web-app-phrase");
 var phraseApiToken = process2.env.PHRASE_API_TOKEN;
@@ -29,8 +28,8 @@ var clearTmpDir = () => {
 };
 
 // src/lib.ts
-import fs2 from "node:fs";
-import path2 from "node:path";
+import fs2 from "fs";
+import path2 from "path";
 import { differenceInMilliseconds } from "date-fns/differenceInMilliseconds";
 import {
   Configuration,
@@ -41,7 +40,7 @@ import {
   JobLocalesApi
 } from "phrase-js";
 import FormData from "form-data";
-import process3 from "node:process";
+import process3 from "process";
 import { addedDiff, updatedDiff, deletedDiff } from "deep-object-diff";
 import { dot } from "dot-object";
 import { confirm, input, select } from "@inquirer/prompts";
@@ -105,15 +104,24 @@ var downloadLocale = async (locale, skipUnverifiedTranslations = true) => {
 };
 var createLocaleFiles = async ({
   locale,
-  localesDirPath
+  localesDirPath,
+  preserveLocalKeys = true
 }) => {
   const localeJsonObject = __require(path2.join(tempDirPath, `${locale}.json`));
   const namespaces = Object.keys(localeJsonObject);
   await Promise.all(
     namespaces.map((namespace) => {
+      let content = localeJsonObject[namespace];
+      if (preserveLocalKeys) {
+        const localFilePath = path2.join(localesDirPath, locale, `${namespace}.json`);
+        if (fs2.existsSync(localFilePath)) {
+          const localContent = __require(localFilePath);
+          content = { ...content, ...localContent };
+        }
+      }
       return fs2.writeFileSync(
         path2.join(localesDirPath, locale, `${namespace}.json`),
-        JSON.stringify(localeJsonObject[namespace], null, 4)
+        JSON.stringify(content, null, 4) + "\n"
       );
     })
   );
@@ -383,7 +391,8 @@ var updatePhraseJob = async ({
 // src/pull.ts
 var pull = async ({
   localesDirPath,
-  phraseProjectId: phraseProjectId2
+  phraseProjectId: phraseProjectId2,
+  preserveLocalKeys = true
 }) => {
   setPhraseProjectId(phraseProjectId2);
   prepareTmpDir();
@@ -392,7 +401,8 @@ var pull = async ({
     supportedLocales.map(
       (locale) => createLocaleFiles({
         locale,
-        localesDirPath
+        localesDirPath,
+        preserveLocalKeys: preserveLocalKeys && locale === "en"
       })
     )
   );
@@ -407,7 +417,8 @@ var modifiedTranslationKeys = [];
 var push = async ({
   phraseProjectName,
   phraseProjectId: phraseProjectId2,
-  localesDirPath
+  localesDirPath,
+  allowDelete = false
 }) => {
   var _a, _b;
   setPhraseProjectId(phraseProjectId2);
@@ -419,7 +430,7 @@ var push = async ({
   });
   const jobs = await getJobs();
   const translationsDiff = await findModifiedTranslationKeys(phraseObj, localObj);
-  if (Object.keys(translationsDiff.added).length + Object.keys(translationsDiff.updated).length + Object.keys(translationsDiff.deleted).length === 0) {
+  if (Object.keys(translationsDiff.added).length + Object.keys(translationsDiff.updated).length + (allowDelete ? Object.keys(translationsDiff.deleted).length : 0) === 0) {
     console.log("Nothing to push");
     process.exit(0);
   }
@@ -452,10 +463,18 @@ var push = async ({
       modifiedTranslationKeys.push(result.key);
     }
   }
-  for (const [name] of Object.entries(translationsDiff.deleted)) {
-    console.log(`Deleting translation key ${name}`);
-    await deleteTranslationKey(name);
-    console.log(`Translation key ${name} was deleted`);
+  if (allowDelete) {
+    for (const [name] of Object.entries(translationsDiff.deleted)) {
+      console.log(`Deleting translation key ${name}`);
+      await deleteTranslationKey(name);
+      console.log(`Translation key ${name} was deleted`);
+    }
+  } else if (Object.keys(translationsDiff.deleted).length > 0) {
+    for (const [name] of Object.entries(translationsDiff.deleted)) {
+      console.log(
+        `Skipping deletion of "${name}" \u2014 pass allowDelete: true to remove it from Phrase`
+      );
+    }
   }
   if (userInput.phraseJob === "CREATE_NEW" /* CREATE_NEW */) {
     console.log("Creating a phrase job");

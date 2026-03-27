@@ -99,26 +99,40 @@ const downloadLocale = async (locale: string, skipUnverifiedTranslations = true)
 
     await fs.promises.writeFile(path.join(tempDirPath, `${locale}.json`), buffer)
 
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     return require(path.join(tempDirPath, `${locale}.json`))
 }
 
 const createLocaleFiles = async ({
     locale,
     localesDirPath,
+    preserveLocalKeys = true,
 }: {
     localesDirPath: string
     locale: string
+    preserveLocalKeys?: boolean
 }) => {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const localeJsonObject = require(path.join(tempDirPath, `${locale}.json`))
+    const localeJsonObject = JSON.parse(
+        fs.readFileSync(path.join(tempDirPath, `${locale}.json`), 'utf-8')
+    )
 
     const namespaces = Object.keys(localeJsonObject)
 
     await Promise.all(
         namespaces.map((namespace) => {
+            let content = localeJsonObject[namespace]
+
+            if (preserveLocalKeys) {
+                const localFilePath = path.join(localesDirPath, locale, `${namespace}.json`)
+                if (fs.existsSync(localFilePath)) {
+                    const localContent = JSON.parse(fs.readFileSync(localFilePath, 'utf-8'))
+                    content = { ...localContent, ...content }
+                }
+            }
+
             return fs.writeFileSync(
                 path.join(localesDirPath, locale, `${namespace}.json`),
-                JSON.stringify(localeJsonObject[namespace], null, 4)
+                JSON.stringify(content, null, 4) + '\n'
             )
         })
     )
@@ -156,7 +170,7 @@ const composeLocalLocaleFile = async ({
 
     await Promise.all(
         files.map(async (fileName) => {
-            // eslint-disable-next-line @typescript-eslint/no-var-requires
+            // eslint-disable-next-line @typescript-eslint/no-require-imports
             const localeNamespaceFile = require(path.join(localesDirPath, locale, fileName))
             const namespace = fileName.replace('.json', '')
 

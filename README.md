@@ -1,6 +1,14 @@
 # phrase
 NodeJS scripts to push and pull translations from phrase
 
+### Development
+
+```bash
+yarn test   # run all tests
+yarn build  # compile TypeScript
+yarn audit  # check for vulnerabilities
+```
+
 ### Installation
 
 ```bash
@@ -19,6 +27,7 @@ const localesDirPath = path.join(path.resolve(), 'public', 'locales')
 pull({
     localesDirPath,
     phraseProjectId: 'phrase project id',
+    preserveLocalKeys: true, // optional, defaults to true. Set to false to fully overwrite local en keys with Phrase data.
 })
 ```
 
@@ -35,6 +44,7 @@ push({
     phraseProjectName: 'web-app',
     phraseProjectId: 'phrase project id',
     localesDirPath,
+    allowDelete: false, // optional, defaults to false. Pass true to also delete keys removed locally.
 }).catch((e) => {
     console.log('Phrase push failed')
     console.error(e)

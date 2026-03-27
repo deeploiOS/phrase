@@ -5,9 +5,11 @@ import { downloadLocale, createLocaleFiles, setPhraseProjectId } from './lib'
 const pull = async ({
     localesDirPath,
     phraseProjectId,
+    preserveLocalKeys = true,
 }: {
     localesDirPath: string
     phraseProjectId: string
+    preserveLocalKeys?: boolean
 }) => {
     setPhraseProjectId(phraseProjectId)
 
@@ -20,6 +22,7 @@ const pull = async ({
             createLocaleFiles({
                 locale,
                 localesDirPath,
+                preserveLocalKeys: preserveLocalKeys && locale === 'en',
             })
         )
     )
