@@ -22,7 +22,7 @@
         "eslint-config-prettier": "^10.1.8",
         "eslint-plugin-prettier": "^5.5.6",
         "prettier": "3.9.6",
-        "typescript": "^5.6.3",
+        "typescript": "7.0.2",
         "vitest": "^4.1.10"
     },
     "author": "",
@@ -38,5 +38,9 @@
         "phrase-js": "^3.24.0",
         "tsdown": "^0.22.12"
     },
-    "packageManager": "yarn@4.9.2"
+    "engines": {
+        "node": "24.16.0",
+        "yarn": ">=4.17.1"
+    },
+    "packageManager": "yarn@4.17.1"
 }
