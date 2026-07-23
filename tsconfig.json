@@ -1,19 +1,17 @@
 {
     "compilerOptions": {
-      "esModuleInterop": true,
-      "forceConsistentCasingInFileNames": true,
-      "isolatedModules": true,
-      "module": "ESNext",
-      "moduleResolution": "node",
-      "preserveWatchOutput": true,
-      "skipLibCheck": true,
-      "strict": true,
-      "outDir": "dist",
-      "rootDir": "src",
-      "declaration": true
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "isolatedModules": true,
+        "module": "ESNext",
+        "moduleResolution": "bundler",
+        "preserveWatchOutput": true,
+        "skipLibCheck": true,
+        "strict": true,
+        "outDir": "dist",
+        "rootDir": "src",
+        "declaration": true,
     },
     "exclude": ["node_modules"],
-    "include": [
-      "src/index.ts"
-    ],
+    "include": ["src/index.ts"],
 }
