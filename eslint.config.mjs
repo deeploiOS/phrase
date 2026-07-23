@@ -1,9 +1,9 @@
-const tsPlugin = require('@typescript-eslint/eslint-plugin')
-const tsParser = require('@typescript-eslint/parser')
-const prettierRecommended = require('eslint-plugin-prettier/recommended')
+import tsPlugin from '@typescript-eslint/eslint-plugin'
+import tsParser from '@typescript-eslint/parser'
+import prettierRecommended from 'eslint-plugin-prettier/recommended'
 
 /** @type {import('eslint').Linter.Config[]} */
-module.exports = [
+export default [
     {
         ignores: ['dist/**', '**/*.d.ts'],
     },

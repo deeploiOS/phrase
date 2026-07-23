@@ -1,17 +1,17 @@
 {
     "name": "@deeploi/phrase",
-    "version": "1.0.0",
-    "main": "./dist/index.js",
-    "module": "./dist/index.js",
-    "types": "./dist/index.d.ts",
+    "version": "2.0.0",
+    "type": "module",
+    "main": "./dist/index.mjs",
+    "types": "./dist/index.d.mts",
     "private": true,
     "scripts": {
         "audit": "yarn npm audit --severity low",
         "test": "vitest run",
-        "build": "tsup src/index.ts --format cjs,esm --dts",
+        "build": "tsdown src/index.ts --format esm --dts",
         "format:fix": "eslint src --fix",
         "format:check": "eslint src",
-        "build:watch": "tsup src/index.ts --watch --format cjs,esm --dts"
+        "build:watch": "tsdown src/index.ts --watch --format esm --dts"
     },
     "devDependencies": {
         "@types/dot-object": "^2.1.6",
@@ -23,7 +23,7 @@
         "eslint-plugin-prettier": "^5.2.1",
         "prettier": "3.2.5",
         "typescript": "^5.6.3",
-        "vitest": "^2.1.8"
+        "vitest": "^4.1.10"
     },
     "author": "",
     "license": "ISC",
@@ -34,9 +34,9 @@
         "date-fns": "^4.1.0",
         "deep-object-diff": "^1.1.9",
         "dot-object": "^2.1.5",
-        "form-data": "^4.0.2",
+        "form-data": "^4.0.6",
         "phrase-js": "^3.2.0",
-        "tsup": "^8.5.1"
+        "tsdown": "^0.22.12"
     },
     "packageManager": "yarn@4.9.2"
 }
